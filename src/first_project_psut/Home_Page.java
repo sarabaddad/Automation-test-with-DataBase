@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
@@ -29,20 +30,57 @@ public class Home_Page  extends Data{
 		super.setup();
 		con = DriverManager.getConnection("jdbc:mysql://localhost:3306/classicmodels", "root", "Sara!Baddad");
 
+    }
+	
+	
+	@Test (priority=1, enabled=true)
+	public void ShowTestIntroInBrowser() throws InterruptedException {
+		
+        driver.get("about:blank");
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript(
+        	    "var popup = document.createElement('div');" +
+        	    "popup.innerHTML = 'You are about to start an automation QA test for:<br>" +
+        	    "- Signup using a real database<br>" +
+        	    "- Login with the newly created user<br>" +
+        	    "- Logout process<br>" +
+        	    "- Adding a random item to the cart<br>" +
+        	    "Follow along to see each step executed automatically!';" +
+        	    "popup.style.position = 'fixed';" +
+        	    "popup.style.top = '30px';" +
+        	    "popup.style.left = '50%';" +
+        	    "popup.style.transform = 'translateX(-50%)';" +
+        	    "popup.style.padding = '25px 40px';" +
+        	    "popup.style.background = '#FFD700';" +
+        	    "popup.style.color = 'black';" +
+        	    "popup.style.fontSize = '24px';" +
+        	    "popup.style.fontWeight = 'bold';" +
+        	    "popup.style.textAlign = 'center';" +
+        	    "popup.style.border = '3px solid black';" +
+        	    "popup.style.borderRadius = '10px';" +
+        	    "popup.style.boxShadow = '0 0 20px rgba(0,0,0,0.5)';" +
+        	    "popup.style.zIndex = '9999';" +
+        	    "document.body.appendChild(popup);" +
+        	    "setTimeout(function(){ popup.remove(); }, 6000);"
+        	);
+        
+        Thread.sleep(5000);
+
+		driver.navigate().to("https://automationteststore.com/");
+
 	}
+
 	
-	
-	
-	@Test (priority=1, enabled=false)
+	@Test (priority=2, enabled=true)
 	public void Add_data() throws SQLException {
 		
 		stmt = con.createStatement();
-		String query = "INSERT INTO customers (customerNumber, customerName, contactLastName, contactFirstName, phone, addressLine1, addressLine2, city, state, postalCode, country, salesRepEmployeeNumber, creditLimit) VALUES (9991, 'Raghad Obidat Trading', 'Obidat', 'Raghad', '+962-7-9000-1234', 'Al Rabieh Street', NULL, 'Amman', NULL, '11118', 'Jordan', 1370, 75000.00);";
+		String query = "INSERT INTO customers (customerNumber, customerName, contactLastName, contactFirstName, phone, addressLine1, addressLine2, city, state, postalCode, country, salesRepEmployeeNumber, creditLimit) VALUES (2003, 'SARA ZEYAD BADDAD', 'ZEYADBbd', 'Sara', '+962-8-2003-0000', 'Al Rabieh Street', NULL, 'Amman', NULL, '11118', 'Jordan', 1370, 75000.00);";
 		stmt.executeUpdate(query);
 		
 	}	
 	
-	@Test (priority=2, enabled=true)
+	@Test (priority=3, enabled=true)
 	public void read_data() throws SQLException {
 		stmt = con.createStatement();
 		String query = "Select * from customers";
@@ -58,10 +96,8 @@ public class Home_Page  extends Data{
 		
 	}
 	
-
 	
-
-	@Test (priority = 3, enabled=false)
+	@Test (priority = 4, enabled=true)
 	public void signupwithdatabase() throws InterruptedException {
 		//driver.navigate().to("https://automationteststore.com/index.php?rt=account/login");
 
@@ -102,18 +138,21 @@ public class Home_Page  extends Data{
 		State.selectByIndex(RANDSTATE);
 		PostalInput.sendKeys(PostalCode);
 		LoginName.sendKeys(firstname+lastname);
+		Thread.sleep(1000);
+
 		Password.sendKeys(pass);
 		ConfirmPassword.sendKeys(pass);
 		agree_button.click();
 		continueTosignup.click();
-		
+		Thread.sleep(1000);
+
 
 		//Assertion
 		Assert.assertEquals(driver.getCurrentUrl().contains("success"), true);
 		Assert.assertEquals(driver.getPageSource().contains("Congratulations"), true);
 		WebElement WelcomeMessageArea = driver.findElement(By.id("customernav"));
 		Assert.assertEquals(WelcomeMessageArea.getText().contains(firstname), true);
-		Thread.sleep(10000);
+		//Thread.sleep(10000);
 
 	}
 	
@@ -138,9 +177,10 @@ public class Home_Page  extends Data{
 	}
 	
 	
-	@Test (priority = 6, enabled=true)
-	public void logout() {
-		
+	@Test (priority = 5, enabled=true)
+	public void logout() throws InterruptedException {
+		Thread.sleep(1000);
+
 		driver.navigate().to("https://automationteststore.com/index.php?rt=account/logout");
 		
 		Assert.assertEquals(driver.getPageSource().contains(logoutconfirm), true);
@@ -148,10 +188,11 @@ public class Home_Page  extends Data{
 	}
 	
 	
-	@Test (priority=7, enabled=true )
+	@Test (priority=6, enabled=true )
 	public void login() {
 		WebElement loginandregister =driver.findElement(By.linkText("Login or register"));
 		loginandregister.click();
+		
 		WebElement LoginName = driver.findElement(By.id("loginFrm_loginname"));
 		WebElement PassTologin = driver.findElement(By.id("loginFrm_password"));
 
@@ -163,7 +204,7 @@ public class Home_Page  extends Data{
 	}
 	
 	
-	@Test (priority =8 , enabled=false, invocationCount=3)
+	@Test (priority =7 , enabled=true, invocationCount=2)
 	public void AddRandomItem () {
 		
 		driver.navigate().to("https://automationteststore.com/");
@@ -184,17 +225,17 @@ public class Home_Page  extends Data{
 	}
 	
 
-	@Test (priority =9, enabled=false)
+	@Test (priority =8, enabled=true)
 	public void cartpage () throws InterruptedException {
 	driver.navigate().to("https://automationteststore.com/index.php?rt=checkout/cart");
-	Thread.sleep(6000);
+	Thread.sleep(2000);
 	}
 	
 	
 	
 	@AfterTest 
 	public void AfterTestingDone() throws InterruptedException {
-		Thread.sleep(3000);
+		Thread.sleep(1000);
 		driver.close();
 		
 	}

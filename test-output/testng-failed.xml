@@ -5,11 +5,10 @@
     <classes>
       <class name="first_project_psut.Home_Page">
         <methods>
-          <include name="login"/>
+          <include name="Add_data"/>
           <include name="AfterTestingDone"/>
           <include name="setup"/>
-          <include name="read_data"/>
-          <include name="logout"/>
+          <include name="signupwithdatabase"/>
         </methods>
       </class> <!-- first_project_psut.Home_Page -->
     </classes>

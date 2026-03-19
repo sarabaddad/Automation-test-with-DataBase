@@ -23,7 +23,7 @@ public class Data {
 	String PostalCode;
 	
 	String email;
-	String pass="12341234";
+	String pass="1234";
 	String logoutconfirm = "You have been logged off your account";
 	
 	Connection con;
